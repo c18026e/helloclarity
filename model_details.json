@@ -1,0 +1,24 @@
+{
+  "knoweldge_bases": [
+        {
+            "Knowledge_Base_name" : "kb_002_hierrachical",
+            "Knowledge_Base_ID" : "5UEQ3KKO6K",
+            "comments": "vulnerability store"
+        },
+        {
+            "Knowledge_Base_name" : "kb_001",
+            "Knowledge_Base_ID" : "UCQEZ5QBIT",
+            "comments":"Jira store "
+        } 
+    ] ,
+  "Foundation_models": [
+    {
+        "model_name": "claude-3-5-sonnet",
+        "model_id": "anthropic.claude-3-5-sonnet-20240620-v1:0"
+    },
+    {
+        "model_name": "Llama",
+        "model_id": "anthropic.claude-3-5-sonnet-20240620-v1:0"
+    }
+  ]
+}
