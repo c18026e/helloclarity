@@ -14,11 +14,13 @@
   "Foundation_models": [
     {
         "model_name": "claude-3-5-sonnet",
-        "model_id": "anthropic.claude-3-5-sonnet-20240620-v1:0"
+        "model_id": "anthropic.claude-3-5-sonnet-20240620-v1:0",
+        "modelArn": "arn:aws:bedrock:us-east-1::foundation-model/anthropic.claude-3-5-sonnet-20240620-v1:0"
     },
     {
-        "model_name": "Llama",
-        "model_id": "anthropic.claude-3-5-sonnet-20240620-v1:0"
+        "model_name": "Llama-3-8B-Instruct",
+        "modelId": "meta.llama3-8b-instruct-v1:0",
+        "modelArn": "arn:aws:bedrock:us-east-1::foundation-model/meta.llama3-8b-instruct-v1:0"
     }
   ]
 }
