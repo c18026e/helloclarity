@@ -1,0 +1,46 @@
+{
+  "knowledge_bases": [
+    {
+      "type": "vulnerability",
+      "entries": [
+        {
+          "Knowledge_Base_name": "kb_002_hierrachical",
+          "Knowledge_Base_ID": "5UEQ3KKO6K",
+          "comments": "vulnerability store"
+        }
+      ]
+    },
+    {
+      "type": "jira",
+      "entries": [
+        {
+          "Knowledge_Base_name": "kb_001",
+          "Knowledge_Base_ID": "UCQEZ5QBIT",
+          "comments": "Jira store"
+        }
+      ]
+    }
+  ],
+  "foundation_models": [
+    {
+      "type": "claude",
+      "entries": [
+        {
+          "model_name": "claude-3-5-sonnet",
+          "model_id": "anthropic.claude-3-5-sonnet-20240620-v1:0",
+          "modelArn": "arn:aws:bedrock:us-east-1::foundation-model/anthropic.claude-3-5-sonnet-20240620-v1:0"
+        }
+      ]
+    },
+    {
+      "type": "Llama",
+      "entries": [
+        {
+          "model_name": "Llama-3-8B-Instruct",
+          "model_id": "meta.llama3-8b-instruct-v1:0",
+          "modelArn": "arn:aws:bedrock:us-east-1::foundation-model/meta.llama3-8b-instruct-v1:0"
+        }
+      ]
+    }
+  ]
+}
