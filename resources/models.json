@@ -4,8 +4,8 @@
       "type": "vulnerability",
       "entries": [
         {
-          "Knowledge_Base_name": "kb_002_hierrachical",
-          "Knowledge_Base_ID": "5UEQ3KKO6K",
+          "Knowledge_Base_name": "vulnerabilitykb",
+          "Knowledge_Base_ID": "YWENQTFNQ7",
           "comments": "vulnerability store"
         }
       ]
@@ -39,6 +39,16 @@
           "model_name": "Llama-3-8B-Instruct",
           "model_id": "meta.llama3-8b-instruct-v1:0",
           "modelArn": "arn:aws:bedrock:us-east-1::foundation-model/meta.llama3-8b-instruct-v1:0"
+        }
+      ]
+    },
+      {
+      "type": "Mistral",
+      "entries": [
+        {
+          "model_name": "Mistral 7B Instruct",
+          "model_id": "mistral.mistral-7b-instruct-v0:2",
+          "modelArn": "arn:aws:bedrock:us-east-1::foundation-model/mistral.mistral-7b-instruct-v0:2"
         }
       ]
     }
