@@ -250,7 +250,11 @@ def main():
 
         print(f"You selected model: {model_choice} with ARN: {MODEL_ARN}")
         # Exit condition
-        text_prompt = input("\nEnter your question ... or (type exit for EXIT)\n")
+
+        print(Fore.GREEN + Style.BRIGHT + "\nEnter your question ... or (type exit for EXIT)" + Style.RESET_ALL)
+        text_prompt = input("> ")
+
+        #text_prompt = input("\nEnter your question ... or (type exit for EXIT)\n")
         if text_prompt.lower() == "exit":
             print("Exiting...")
             break
