@@ -22,6 +22,22 @@ print("The knoweldge base IS is : ", KB_ID)
 REGION = "us-east-1"
 
 
+from colorama import Fore, Style
+
+def print_colored(text, color):
+    """
+    Print text in the specified color using colorama.
+    'grey' is simulated using dim white.
+    """
+    color = color.upper()
+    if color == "GREY":
+        print(Style.DIM + Fore.WHITE + text + Style.RESET_ALL)
+    else:
+        color_code = getattr(Fore, color, Fore.WHITE)
+        print(Style.BRIGHT + color_code + text + Style.RESET_ALL)
+
+
+
 
 
 class BedrockClient:
@@ -65,7 +81,8 @@ class ModelInvoker:
         if not kb_id or not model_arn:  
             print("Knowledge Base ID or Model ARN is not set.")
             return None
-        print(Fore.GREEN + f"Using Knowledge Base ID: {kb_id} and Model ARN: {model_arn}")   
+        #print(Fore.GREEN + f"Using Knowledge Base ID: {kb_id} and Model ARN: {model_arn}")   
+        print_colored(f"Using Knowledge Base ID: {kb_id} and Model ARN: {model_arn}", 'GREY')
 
         try:
             response = self.agent_client.retrieve_and_generate(
@@ -120,7 +137,7 @@ class ModelInvoker:
         if not kb_id or not model_arn:  
             print("Knowledge Base ID or Model ARN is not set.")
             return None
-        print(f"Using Knowledge Base ID: {kb_id} and Model ARN: {model_arn}")   
+        print_colored(f"Using Knowledge Base ID: {kb_id} and Model ARN: {model_arn}", 'GREY')
 
         try:
             response = self.agent_client.retrieve_and_generate(
@@ -178,7 +195,7 @@ class ModelInvoker:
         if not kb_id or not model_arn:  
             print("Knowledge Base ID or Model ARN is not set.")
             return None
-        print(f"Using Knowledge Base ID: {kb_id} and Model ARN: {model_arn}")   
+        print_colored(f"Using Knowledge Base ID: {kb_id} and Model ARN: {model_arn}", 'GREY')
         try:
             #session_id = str(uuid.uuid4())  # Optional: use a consistent session ID for multi-turn
             response = self.agent_client.retrieve_and_generate(
@@ -211,6 +228,7 @@ def main():
 
     while(1):
         
+        color = 'WHITE'
         print("Choose your model type:")
         print("1. Claude")
         print("2. Llama")
@@ -219,10 +237,13 @@ def main():
        
         if model_choice == "1":
             MODEL_ARN = MODEL_ARN_CLAUDE
+            color = 'BLUE'
         elif model_choice == "2":
             MODEL_ARN = MODEL_ARN_META
+            color = 'GREEN'
         elif model_choice == "3":
             MODEL_ARN = MODEL_ARN_MISTRAL
+            color = 'RED'
         else:
             print("Invalid choice. exiting ...  ")
             break 
@@ -260,11 +281,12 @@ def main():
             #result = model_invoker.retrieve_and_generate_claude(text_prompt)
             
             if result:
-                print("Generated Response:\n", result)
+                print("Generated Response:\n")
+                print_colored(result, color)
             else:
-                print("No response generated.")
+                print_colored("No response generated.",'RED')
         else:
-            print("Failed to initialize Bedrock clients.")
+            print_colored("Failed to initialize Bedrock clients.","RED")
 
 
 if __name__ == "__main__":
