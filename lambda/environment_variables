@@ -1,0 +1,7 @@
+# Note : These variables we will create in the lambda , here just providing the information 
+
+# For the lambda helloClarity_sync_knoweldge_base 
+DATA_SOURCE_ID :   BOZNQHGBNY
+KNOWLEDGE_BASE_ID : BIHISGQDXL
+SNS_TOPIC_ARN : arn:aws:sns:us-east-1:266608018458:HelloClarity_Notifications
+
