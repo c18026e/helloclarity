@@ -5,7 +5,7 @@
       "entries": [
         {
           "Knowledge_Base_name": "vulnerabilitykb",
-          "Knowledge_Base_ID": "BIHISGQDXL",
+          "Knowledge_Base_ID": "YYV1RL1X6V",
           "comments": "vulnerability store"
         }
       ]
@@ -33,7 +33,18 @@
       ]
     },
     {
-      "type": "Llama",
+      "type": "cohere",
+      "entries": [
+        {
+          "model_name": "Command R+",
+          "model_id": "cohere.command-r-plus-v1:0",
+          "modelArn": "arn:aws:bedrock:us-east-1::foundation-model/cohere.command-r-plus-v1:0"
+        }
+      ]
+    },
+
+    {
+      "type": "Llama_3_8B_Instruct",
       "entries": [
         {
           "model_name": "Llama-3-8B-Instruct",
@@ -42,13 +53,33 @@
         }
       ]
     },
-      {
-      "type": "Mistral",
+    {
+      "type": "Llama_3_70B_Instruct",
+      "entries": [
+        {
+          "model_name": "Llama 3 70B Instruct",
+          "model_id": "meta.llama3-70b-instruct-v1:0",
+          "modelArn": "arn:aws:bedrock:us-east-1::foundation-model/meta.llama3-70b-instruct-v1:0"
+        }
+      ]
+    },
+    {
+      "type": "Mistral_7B_Instruct",
       "entries": [
         {
           "model_name": "Mistral 7B Instruct",
           "model_id": "mistral.mistral-7b-instruct-v0:2",
           "modelArn": "arn:aws:bedrock:us-east-1::foundation-model/mistral.mistral-7b-instruct-v0:2"
+        }
+      ]
+    },
+    {
+      "type": "Mixtral_8x7B_Instruct",
+      "entries": [
+        {
+          "model_name": "Mistral 7B Instruct",
+          "model_id": "mistral.mixtral-8x7b-instruct-v0:1",
+          "modelArn": "arn:aws:bedrock:us-east-1::foundation-model/mistral.mixtral-8x7b-instruct-v0:1"
         }
       ]
     }

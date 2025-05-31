@@ -12,12 +12,21 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 print(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 # -------------------------------------------------------------------------------------- #
 
-# INITIALIZE THE KNOWLEDGE BASE ID AND MODEL ARNS  ------------------------------------- #
+# RETRIVE KNOWELDGE BASE ID   ------------------------------------- #
 
 KB_ID = get_knowledge_base_id("vulnerability") 
+
+# RETRIVE MODEL ARN BY TYPE ------------------------------------- #
+
 MODEL_ARN_CLAUDE = get_model_arn_by_type("claude") 
-MODEL_ARN_META = get_model_arn_by_type("Llama") 
-MODEL_ARN_MISTRAL = get_model_arn_by_type("Mistral")
+MODEL_ARN_META = get_model_arn_by_type("Llama_3_8B_Instruct") 
+MODEL_ARN_MISTRAL = get_model_arn_by_type("Mistral_7B_Instruct")
+
+MODEL_ARN_COMMANDR = get_model_arn_by_type("cohere")  
+MODEL_ARN_LLAMA3_70B = get_model_arn_by_type("Llama_3_70B_Instruct") 
+MODEL_ARN_MISTRAL_8X7B = get_model_arn_by_type("Mixtral_8x7B_Instruct") 
+
+
 REGION = "us-east-1"
 print("The knoweldge base selected is : ", KB_ID)
 
@@ -202,6 +211,139 @@ class ModelInvoker:
             print(f"Error during retrieval and generation: {e}")
             return None
 
-    def retrieve_and_generate_PUT_MODEL_NAME(self, user_query):
-        pass 
+    def retrieve_and_generate_cohere(self, user_query):
+        kb_id = self.kb_id
+        model_arn = self.model_arn  # Should be the ARN for Cohere Command R+
+        
+        if not self.client or not self.agent_client:
+            print("Bedrock clients are not initialized.")
+            return None
+        if not user_query:
+            print("User query is empty.")
+            return None
+        if not kb_id or not model_arn:
+            print("Knowledge Base ID or Model ARN is not set.")
+            return None
 
+        print_colored(f"Using Knowledge Base ID: {kb_id} and Model ARN: {model_arn}", 'GREY')
+
+        try:
+            response = self.agent_client.retrieve_and_generate(
+                input={"text": user_query},
+                retrieveAndGenerateConfiguration={
+                    "type": "KNOWLEDGE_BASE",
+                    "knowledgeBaseConfiguration": {
+                        "knowledgeBaseId": kb_id,
+                        "modelArn": model_arn,
+                        "generationConfiguration": {
+                            "promptTemplate": {
+                                "textPromptTemplate": (
+                                    "You are a helpful assistant. "
+                                    "Use the following knowledge base search results to answer the user's question. "
+                                    "Search Results: $search_results$"
+                                )
+                            }
+                        }
+                    }
+                }
+            )
+            return response["output"]["text"]
+        except Exception as e:
+            print(f"Error during retrieval and generation: {e}")
+            return None
+
+    def retrieve_and_generate_Llama_3_70B_Instruct(self, user_query):
+        kb_id = self.kb_id
+        model_arn = self.model_arn  # Should be the ARN for LLaMA 3 7B Instruct
+
+        if not self.client or not self.agent_client:
+            print("Bedrock clients are not initialized.")
+            return None
+        if not user_query:
+            print("User query is empty.")
+            return None
+        if not kb_id or not model_arn:
+            print("Knowledge Base ID or Model ARN is not set.")
+            return None
+
+        print_colored(f"Using Knowledge Base ID: {kb_id} and Model ARN: {model_arn}", 'GREY')
+
+        try:
+            response = self.agent_client.retrieve_and_generate(
+                input={"text": user_query},
+                retrieveAndGenerateConfiguration={
+                    "type": "KNOWLEDGE_BASE",
+                    "knowledgeBaseConfiguration": {
+                        "knowledgeBaseId": kb_id,
+                        "modelArn": model_arn,
+                        "generationConfiguration": {
+                            "promptTemplate": {
+                                "textPromptTemplate": (
+                                    "You are a helpful assistant. "
+                                    "Use the following knowledge base search results to answer the user's question clearly and concisely. "
+                                    "Search Results: $search_results$"
+                                )
+                            }
+                        }
+                    }
+                }
+            )
+            return response["output"]["text"]
+        except Exception as e:
+            print(f"Error during retrieval and generation: {e}")
+            return None
+        
+    def retrieve_and_generate_Mixtral_8x7B_Instruct(self, user_query):
+        
+        # Not working 
+        kb_id = self.kb_id
+        model_arn = "arn:aws:bedrock:us-east-1::foundation-model/mistral.mixtral-8x7b-instruct-v0:1"
+
+        if not self.client or not self.agent_client:
+            print("Bedrock clients are not initialized.")
+            return None
+        if not user_query:
+            print("User query is empty.")
+            return None
+        if not kb_id or not model_arn:
+            print("Knowledge Base ID or Model ARN is not set.")
+            return None
+
+        print_colored(f"Using Knowledge Base ID: {kb_id} and Model ARN: {model_arn}", 'GREY')
+
+        try:
+            response = self.agent_client.retrieve_and_generate(
+                input={"text": user_query},
+                retrieveAndGenerateConfiguration={
+                    "type": "KNOWLEDGE_BASE",
+                    "knowledgeBaseConfiguration": {
+                        "knowledgeBaseId": kb_id,
+                        "modelArn": model_arn,
+                        "orchestrationConfiguration": {
+                            "promptTemplate": {
+                                "textPromptTemplate": (
+                                    "<s>[INST] $conversation_history$\n\n"
+                                    "Please retrieve relevant documents from the knowledge base to help answer the user's question below.\n\n"
+                                    "User Query:\n$user_input$\n\n"
+                                    "$output_format_instructions$ [/INST]"
+                                )
+                            }
+                        },
+                        "generationConfiguration": {
+                            "promptTemplate": {
+                                "textPromptTemplate": (
+                                    "<s>[INST] $conversation_history$\n\n"
+                                    "Use the following search results to answer the user's question.\n\n"
+                                    "Search Results:\n$search_results$\n\n"
+                                    "User Question:\n$user_input$\n\n"
+                                    "$output_format_instructions$ [/INST]"
+                                )
+                            }
+                        }
+                    }
+                }
+            )
+            return response["output"]["text"]
+        except Exception as e:
+            print(f"Error during retrieval and generation: {e}")
+            return None

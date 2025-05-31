@@ -18,14 +18,17 @@ def main():
         models = {
                     "1": ("Claude", MODEL_ARN_CLAUDE, "BLUE"),
                     "2": ("Llama", MODEL_ARN_META, "GREEN"),
-                    "3": ("Mistral", MODEL_ARN_MISTRAL, "RED")
+                    "3": ("Mistral", MODEL_ARN_MISTRAL, "RED"),
+                    "4": ("Command_R", MODEL_ARN_COMMANDR, "YELLOW"),
+                    "5": ("Llama_3_70B_Instruct", MODEL_ARN_LLAMA3_70B, "CYAN"),
+                    "6": ("Mixtral_8X7B", MODEL_ARN_MISTRAL_8X7B, "MAGENTA"),
                 }
 
         print("Choose your model type:")
         for key, (name, _, _) in models.items():
             print(f"{key}. {name}")
 
-        model_choice = input("Enter your choice (1/2/3): ")
+        model_choice = input("Enter your choice (1/2/3/4/5/6): ")
 
         if model_choice in models:
             model_name, MODEL_ARN, color = models[model_choice]
@@ -68,6 +71,39 @@ def main():
                 result = model_invoker.retrieve_and_generate_llama3(text_prompt)
             elif model_choice == "3":
                 result = model_invoker.retrieve_and_generate_mistral(text_prompt)
+            elif model_choice == "4":
+                result = model_invoker.retrieve_and_generate_cohere(text_prompt)
+            elif model_choice == "5":
+                result = model_invoker.retrieve_and_generate_Llama_3_70B_Instruct(text_prompt)
+
+            elif model_choice == "6":
+                together = ""
+                print("Executing all Models and capturing the output in a single note  ")
+                bedrock_client = BedrockClient() 
+                model_invoker = ModelInvoker(bedrock_client.client, bedrock_client.agent_client, KB_ID, MODEL_ARN_CLAUDE)
+                together +=  model_invoker.retrieve_and_generate_claude(text_prompt)
+               
+                bedrock_client = BedrockClient()
+                model_invoker = ModelInvoker(bedrock_client.client, bedrock_client.agent_client, KB_ID, MODEL_ARN_META) 
+                together += "\n\n" + model_invoker.retrieve_and_generate_llama3(text_prompt)
+               
+                bedrock_client = BedrockClient() 
+                model_invoker = ModelInvoker(bedrock_client.client, bedrock_client.agent_client, KB_ID, MODEL_ARN_MISTRAL)
+                together += "\n\n" + model_invoker.retrieve_and_generate_mistral(text_prompt)
+               
+                bedrock_client = BedrockClient() 
+                model_invoker = ModelInvoker(bedrock_client.client, bedrock_client.agent_client, KB_ID, MODEL_ARN_COMMANDR)
+                together += "\n\n" + model_invoker.retrieve_and_generate_cohere(text_prompt)
+               
+                bedrock_client = BedrockClient() 
+                model_invoker = ModelInvoker(bedrock_client.client, bedrock_client.agent_client, KB_ID, MODEL_ARN_LLAMA3_70B)
+                together += "\n\n" + model_invoker.retrieve_and_generate_Llama_3_70B_Instruct(text_prompt)
+                
+                print(together)
+
+            # Uncomment the following lines if you want to add more models in the future
+            #elif model_choice == "6":
+             #   result = model_invoker.retrieve_and_generate_Mixtral_8x7B_Instruct(text_prompt)    
             else:
                 print("Invalid choice. Defaulting to Claude.")          
             #result = model_invoker.retrieve_and_generate_claude(text_prompt)
