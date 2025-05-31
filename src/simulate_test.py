@@ -81,25 +81,30 @@ def main():
                 print("Executing all Models and capturing the output in a single note  ")
                 bedrock_client = BedrockClient() 
                 model_invoker = ModelInvoker(bedrock_client.client, bedrock_client.agent_client, KB_ID, MODEL_ARN_CLAUDE)
+                together +=  f"Client : {MODEL_ARN_CLAUDE}\n" 
                 together +=  model_invoker.retrieve_and_generate_claude(text_prompt)
                
                 bedrock_client = BedrockClient()
                 model_invoker = ModelInvoker(bedrock_client.client, bedrock_client.agent_client, KB_ID, MODEL_ARN_META) 
+                together +=  f"Client : {MODEL_ARN_META}\n" 
                 together += "\n\n" + model_invoker.retrieve_and_generate_llama3(text_prompt)
                
                 bedrock_client = BedrockClient() 
                 model_invoker = ModelInvoker(bedrock_client.client, bedrock_client.agent_client, KB_ID, MODEL_ARN_MISTRAL)
+                together +=  f"Client : {MODEL_ARN_MISTRAL}\n" 
                 together += "\n\n" + model_invoker.retrieve_and_generate_mistral(text_prompt)
                
                 bedrock_client = BedrockClient() 
                 model_invoker = ModelInvoker(bedrock_client.client, bedrock_client.agent_client, KB_ID, MODEL_ARN_COMMANDR)
+                together +=  f"Client : {MODEL_ARN_COMMANDR}\n" 
                 together += "\n\n" + model_invoker.retrieve_and_generate_cohere(text_prompt)
                
                 bedrock_client = BedrockClient() 
                 model_invoker = ModelInvoker(bedrock_client.client, bedrock_client.agent_client, KB_ID, MODEL_ARN_LLAMA3_70B)
+                together +=  f"Client : {MODEL_ARN_LLAMA3_70B}\n" 
                 together += "\n\n" + model_invoker.retrieve_and_generate_Llama_3_70B_Instruct(text_prompt)
                 
-                print(together)
+                #print(together)
 
             # Uncomment the following lines if you want to add more models in the future
             #elif model_choice == "6":
@@ -108,6 +113,12 @@ def main():
                 print("Invalid choice. Defaulting to Claude.")          
             #result = model_invoker.retrieve_and_generate_claude(text_prompt)
             
+            prompt = f"Question: {text_prompt}\n . There are multiple answers fetched from various models as {together} . Please provide a concise answer to the question based on the information provided."
+            
+            bedrock_client = BedrockClient()
+            model_invoker = ModelInvoker(bedrock_client.client, bedrock_client.agent_client, KB_ID, MODEL_ARN_CLAUDE)
+            result = model_invoker.retrieve_and_generate_claude(prompt)
+
             if result:
                 print("Generated Response:\n")
                 print_colored(result, color)
