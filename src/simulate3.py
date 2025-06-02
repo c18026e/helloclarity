@@ -25,7 +25,8 @@ MODELS = {
     "3": ("Mistral", MODEL_ARN_MISTRAL, "RED"),
     "4": ("Command_R", MODEL_ARN_COMMANDR, "YELLOW"),
     "5": ("Llama_3_70B_Instruct", MODEL_ARN_LLAMA3_70B, "CYAN"),
-    "6": ("Mixtral_8X7B", MODEL_ARN_MISTRAL_8X7B, "MAGENTA"),
+    #"6": ("Mixtral_8X7B", MODEL_ARN_MISTRAL_8X7B, "MAGENTA"),
+    "7": ("Llama_3_70B_Instruct", MODEL_ARN_LLAMA3_70B, "MAGENTA"),
 }
 
 
@@ -33,7 +34,7 @@ def select_model():
     print("Choose your model type:")
     for key, (name, _, _) in MODELS.items():
         print(f"{key}. {name}")
-    choice = input("Enter your choice (1/2/3/4/5/6): ").strip()
+    choice = input("Enter your choice (1/2/3/4/5/6/7): ").strip()
     return MODELS.get(choice), choice
 
 
@@ -44,6 +45,7 @@ def get_user_input():
 
 def invoke_model(model_invoker, model_name, prompt):
     method_name = f"retrieve_and_generate_{model_name.lower().replace('-', '_')}"
+    print("should hit ", method_name)
     method = getattr(model_invoker, method_name, None)
     return method(prompt) if method else None
 
@@ -55,7 +57,10 @@ def run_all_models(prompt):
         bedrock_client = BedrockClient()
         invoker = ModelInvoker(bedrock_client.client, bedrock_client.agent_client, KB_ID, arn)
         response = invoke_model(invoker, name, prompt)
+        print(response)
         combined_output += f"\nClient: {arn}\n{response}\n"
+        print_colored(combined_output, "MAGENTA")
+    print("All models have been invoked. Combined output:")
     return combined_output
 
 
@@ -65,9 +70,17 @@ def summarize_combined_output(prompt, combined_output):
         f"There are multiple answers fetched from various models:\n{combined_output}\n\n"
         "Please provide a concise answer to the question based on the information provided."
     )
+    name = "Command_R"
+
+    print("Summarizing with Command_R model...")
+    print(f"Summary Prompt: {summary_prompt}")
+    print(f"Knowledge Base ID: {KB_ID}")    
+
     bedrock_client = BedrockClient()
-    summarizer = ModelInvoker(bedrock_client.client, bedrock_client.agent_client, KB_ID, MODEL_ARN_CLAUDE)
-    return summarizer.retrieve_and_generate_claude(summary_prompt)
+    invoker = ModelInvoker(bedrock_client.client, bedrock_client.agent_client, KB_ID, MODEL_ARN_COMMANDR)
+    
+    response =  invoke_model(invoker, name, summary_prompt)
+    return response if response else "No summary generated."
 
 
 def main():
@@ -98,10 +111,17 @@ def main():
 
         model_invoker = ModelInvoker(bedrock_client.client, bedrock_client.agent_client, KB_ID, model_arn)
 
-        if model_choice == "6":
+        if model_choice == "7":
+    
+            print_colored("Running all models and summarizing...", "MAGENTA")       
             combined_output = run_all_models(user_input)
-            result = summarize_combined_output(user_input, combined_output)
+            print_colored("Combining outputs from all models...", "MAGENTA")
+            print("Combined Output:\n", combined_output)    
+            result = invoke_model(model_invoker, model_name, combined_output)
+            #result = summarize_combined_output(user_input, combined_output)
         else:
+            print("NOTE THIS: ", model_invoker,model_name,user_input)
+
             result = invoke_model(model_invoker, model_name, user_input)
 
         if result:

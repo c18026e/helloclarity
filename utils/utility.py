@@ -12,7 +12,7 @@ def get_knowledge_base_id(kb_type):
         data = json.load(file)
 
     for kb in data.get('knowledge_bases', []):
-        if kb.get('type') == kb_type:
+        if kb.get('type').lower() == kb_type.lower():
             entries = kb.get('entries', [])
             if entries:
                 return entries[0].get('Knowledge_Base_ID')

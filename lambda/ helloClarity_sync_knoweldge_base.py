@@ -22,7 +22,7 @@ def lambda_handler(event, context):
                 dataSourceId=DATA_SOURCE_ID
             )
 
-            # Send success email
+            # Send success email    
             sns.publish(
                 TopicArn=SNS_TOPIC_ARN,
                 Subject="Knowledge Base Sync Successful",
@@ -35,6 +35,11 @@ def lambda_handler(event, context):
             }
 
         except Exception as e:
+             sns.publish(
+                TopicArn=SNS_TOPIC_ARN,
+                Subject="Knowledge Base Synching Error !",
+                Message=f"The file {s3_uri} NOT synced with knowledge base {KNOWLEDGE_BASE_ID} : {str(e)}"
+            )
             print("Error syncing knowledge base:", str(e))
             return {
                 'statusCode': 500,
