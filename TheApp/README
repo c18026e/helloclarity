@@ -1,0 +1,40 @@
+ABOUT VIRTUAL ENV : 
+
+# Activate Virtual Environment
+Activate Virtual env : 
+    inside your helloclarity project : 
+         source venv/bin/activate
+
+# Deactivate Virtual Environment
+Deactivate :
+      deactivate
+
+# --------------------------------------------------------------------------
+
+pip install opensearch-py requests-aws4auth
+
+
+# -----------------------------------------------------------------------------
+
+# Free up PORTS
+
+sudo lsof -i :PORT
+sudo lsof -i :8501
+
+sudo kill -9 PID
+
+
+
+#  ------------------------------------------------------------------------------
+
+#  Run the streamlit job in background as :
+
+nohup streamlit run run_helloClarity.py & disown
+or 
+nohup streamlit run run_helloClarity.py > streamlit.log 2>&1 & disown
+# -------------------------------------------------------------------
+
+# Check your application running in background :
+ps aux | grep streamlit
+
+
