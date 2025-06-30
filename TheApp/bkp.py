@@ -17,42 +17,15 @@ system_prompt = (
     "Use the search results to generate accurate and relevant responses to user queries. "
     "If possible provide bullet points as well as a summary of the answer and use some bold fonts for highlighting important points. "
     "Please start your answer as 'Dear Clarity User ,' and end with 'Thank you for using Clarity.'"
-)
+)   
 
-# --- Custom CSS for terminal-style input and green buttons ---
-st.markdown("""
-    <style>
-        textarea {
-            background-color: black !important;
-            color: lime !important;
-            font-family: monospace !important;
-            font-size: 16px !important;
-        }
-        div.stButton > button {
-            background-color: #28a745;
-            color: white;
-            font-size: 18px;
-            height: 3em;
-            width: 100%;
-            border-radius: 8px;
-        }
-    </style>
-""", unsafe_allow_html=True)
-
-# --- UI Elements ---
+# Streamlit UI
 st.title("Hello Clarity - AI Model Interaction")
 st.write("Select a model and ask your question. Type 'exit' to quit.")  
 
 model_choice = st.selectbox("Choose your model type:", ["Claude", "Llama", "Mistral"])
-prompt = st.text_area("", height=150, placeholder="Type your question here...")
-
-# Initialize session state
-if "response" not in st.session_state:
-    st.session_state.response = ""
-if "prompt" not in st.session_state:
-    st.session_state.prompt = ""
-
-submit = st.button("ENTER")
+prompt = st.text_area("Enter your question (type 'exit' to quit):", height=150)
+submit = st.button("ENTER", use_container_width=True)
 
 if submit:
     if prompt.lower() == "exit":

@@ -38,3 +38,14 @@ nohup streamlit run run_helloClarity.py > streamlit.log 2>&1 & disown
 ps aux | grep streamlit
 
 
+cd AI_project/helloclarity/TheApp
+cd helloclarity
+cd TheApp
+nohup streamlit run run_helloClarity.py > streamlit.log 2>&1 & disown
+
+
+# To stop the Application 
+ps aux | grep streamlit
+
+
+kill 5568
